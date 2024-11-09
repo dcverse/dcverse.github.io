@@ -1,3 +1,7 @@
+import feedparser
+import datetime
+from feedgen.feed import FeedGenerator
+
 def filter_podcast_feed(original_feed_url, filter_words, output_file='filtered_feed.xml'):
     """
     Creates a filtered RSS feed from a podcast feed URL.
