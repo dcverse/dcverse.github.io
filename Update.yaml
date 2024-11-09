@@ -1,0 +1,35 @@
+name: Update Podcast Feed
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:      # Allows manual triggers
+
+jobs:
+  update-feed:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install feedparser feedgen
+    
+    - name: Run feed filter script
+      env:
+        FEED_URL: ${{ secrets.FEED_URL }}
+      run: |
+        python podcast_filter.py
+    
+    - name: Commit and push if changed
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add filtered_feed.xml
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update filtered feed" && git push)
