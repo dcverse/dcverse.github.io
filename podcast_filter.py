@@ -22,6 +22,7 @@ def filter_podcast_feed(original_feed_url, filter_words, output_file='filtered_f
     fg.link(href=feed.feed.link)
     fg.description(feed.feed.description)
     fg.language(feed.feed.language)
+    fg.image(feed.feed.image.href)
     #fg.podcast.itunes_author(feed.feed.author if 'author' in feed.feed else '')
     
     # Filter and add entries
